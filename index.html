@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sonia Raj — AI/ML Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080c10;
+      --surface: #0d1117;
+      --surface2: #131920;
+      --border: #1e2a35;
+      --text: #e8edf2;
+      --muted: #5a7080;
+      --dim: #8da0ad;
+      --teal: #00d4b4;
+      --teal-dim: rgba(0,212,180,0.08);
+      --teal-border: rgba(0,212,180,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inconsolata', monospace;
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    .cursor {
+      width: 8px; height: 8px;
+      background: var(--teal);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      width: 30px; height: 30px;
+      border: 1px solid rgba(0,212,180,0.4);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,180,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,180,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(8,12,16,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      color: var(--teal);
+    }
+    .nav-logo span { color: var(--dim); font-weight: 400; }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 7rem 3rem 4rem;
+      position: relative;
+      z-index: 1;
+      gap: 4rem;
+    }
+
+    .hero-status {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border: 1px solid var(--teal-border);
+      background: var(--teal-dim);
+      padding: 0.4rem 0.9rem;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+    .hero h1 .line2 { color: var(--teal); }
+
+    .hero-sub {
+      font-size: 0.9rem;
+      color: var(--dim);
+      max-width: 440px;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+
+    .hero-meta {
+      display: flex; gap: 2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.7s;
+    }
+    .meta-item { font-size: 0.78rem; color: var(--muted); }
+    .meta-item strong { display: block; font-weight: 500; color: var(--text); font-size: 0.9rem; margin-bottom: 0.1rem; }
+
+    .hero-cta {
+      display: flex; gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.85s;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-family: 'Inconsolata', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: none;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--teal); color: var(--bg); font-weight: 500; }
+    .btn-primary:hover { background: #00f0ce; transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--teal); border: 1px solid var(--teal-border); }
+    .btn-ghost:hover { background: var(--teal-dim); }
+
+    .hero-terminal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.5s;
+    }
+    .terminal-bar {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot.r { background: #ff5f57; }
+    .t-dot.y { background: #ffbd2e; }
+    .t-dot.g { background: #28ca41; }
+    .terminal-title { font-size: 0.72rem; color: var(--muted); margin-left: auto; letter-spacing: 0.06em; }
+    .terminal-body { padding: 1.5rem; font-size: 0.82rem; line-height: 2; }
+    .t-line { display: flex; gap: 0.75rem; }
+    .t-prompt { color: var(--teal); }
+    .t-out { color: var(--dim); padding-left: 1.5rem; }
+    .t-key { color: #7ec8e3; }
+    .t-val { color: #a8d8a8; }
+    .t-num { color: #f9c74f; }
+
+    .section { padding: 6rem 3rem; position: relative; z-index: 1; }
+
+    .sec-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+    .sec-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      margin-bottom: 3rem;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-list { display: flex; flex-direction: column; gap: 1px; }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2rem;
+      padding: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .exp-item:hover { border-color: var(--teal-border); background: var(--surface2); }
+    .exp-date { font-size: 0.72rem; letter-spacing: 0.06em; color: var(--teal); margin-bottom: 0.4rem; }
+    .exp-company { font-size: 0.8rem; color: var(--muted); }
+    .exp-role { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1rem; margin-bottom: 0.75rem; }
+    .exp-bullets { list-style: none; }
+    .exp-bullets li {
+      font-size: 0.8rem; color: var(--dim);
+      padding: 0.25rem 0 0.25rem 1rem;
+      position: relative;
+    }
+    .exp-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--teal); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .proj-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--teal);
+      transition: height 0.3s ease;
+    }
+    .proj-card:hover { border-color: var(--teal-border); background: var(--surface2); }
+    .proj-card:hover::before { height: 100%; }
+    .proj-icon {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--teal-dim);
+      border: 1px solid var(--teal-border);
+      border-radius: 4px;
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .proj-title { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1rem; margin-bottom: 0.6rem; }
+    .proj-desc { font-size: 0.8rem; color: var(--dim); line-height: 1.7; margin-bottom: 1.25rem; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .proj-tag {
+      font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--bg);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1px;
+    }
+    .skill-group { background: var(--surface); border: 1px solid var(--border); padding: 1.5rem 2rem; }
+    .skill-group-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+    .skill-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-chip {
+      font-size: 0.78rem; padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border); color: var(--dim); background: var(--bg);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .skill-chip:hover { border-color: var(--teal-border); color: var(--teal); }
+
+    .pub-list { display: flex; flex-direction: column; gap: 1px; }
+    .pub-item {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 1.75rem 2rem;
+      display: grid; grid-template-columns: auto 1fr; gap: 1.5rem;
+      align-items: start;
+      transition: border-color 0.2s;
+    }
+    .pub-item:hover { border-color: var(--teal-border); }
+    .pub-year {
+      font-size: 0.7rem; letter-spacing: 0.08em; color: var(--teal);
+      border: 1px solid var(--teal-border); background: var(--teal-dim);
+      padding: 0.25rem 0.6rem; white-space: nowrap;
+    }
+    .pub-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.35rem; }
+    .pub-conf { font-size: 0.78rem; color: var(--muted); }
+    .pub-doi { font-size: 0.72rem; color: var(--teal); opacity: 0.7; margin-top: 0.25rem; }
+
+    .contact-section {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 6rem 3rem; text-align: center; z-index: 1; position: relative;
+    }
+    .contact-section p { color: var(--dim); font-size: 0.9rem; margin-bottom: 2rem; }
+    .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .contact-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: 1px solid var(--border);
+      color: var(--dim); text-decoration: none;
+      font-size: 0.82rem; letter-spacing: 0.06em;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--teal-border); color: var(--teal); background: var(--teal-dim); }
+
+    footer {
+      padding: 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em;
+      z-index: 1; position: relative;
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-terminal { display: none; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+      .hero { padding: 6rem 1.25rem 3rem; }
+      .section { padding: 4rem 1.25rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .contact-section { padding: 4rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav>
+    <div class="nav-logo">Sonia<span>.Raj()</span></div>
+    <ul class="nav-links">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-status">
+        <span class="status-dot"></span>
+        Available for Opportunities
+      </div>
+      <h1>AI/ML Engineer<br/><span class="line2">&amp; Researcher.</span></h1>
+      <p class="hero-sub">
+        M.Tech in CS from Manipal Institute of Technology. I build intelligent systems — from NVH prediction pipelines to multimodal deep learning for medical diagnostics. 3 published research papers across IEEE, SAE, and Bentham Science.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-item"><strong>8.19</strong>M.Tech CGPA</div>
+        <div class="meta-item"><strong>3</strong>Publications</div>
+        <div class="meta-item"><strong>Bangalore</strong>India</div>
+      </div>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="mailto:soniarajhgr@gmail.com" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-terminal">
+      <div class="terminal-bar">
+        <span class="t-dot r"></span><span class="t-dot y"></span><span class="t-dot g"></span>
+        <span class="terminal-title">sonia_raj.json</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">$</span>&nbsp;cat profile.json</div>
+        <div class="t-out">{</div>
+        <div class="t-out">&nbsp;&nbsp;<span class="t-key">"name"</span>: <span class="t-val">"Sonia Raj"</span>,</div>
+        <div class="t-out">&nbsp;&nbsp;<span class="t-key">"role"</span>: <span class="t-val">"AI/ML Engineer"</span>,</div>
+        <div class="t-out">&nbsp;&nbsp;<span class="t-key">"degree"</span>: <span class="t-val">"M.Tech CSE, MIT"</span>,</div>
+        <div class="t-out">&nbsp;&nbsp;<span class="t-key">"cgpa"</span>: <span class="t-num">8.19</span>,</div>
+        <div class="t-out">&nbsp;&nbsp;<span class="t-key">"publications"</span>: <span class="t-num">3</span>,</div>
+        <div class="t-out">&nbsp;&nbsp;<span class="t-key">"stack"</span>: [<span class="t-val">"Python"</span>, <span class="t-val">"PyTorch"</span>,</div>
+        <div class="t-out">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">"LLMs"</span>, <span class="t-val">"CUDA"</span>, <span class="t-val">"GCP"</span>],</div>
+        <div class="t-out">&nbsp;&nbsp;<span class="t-key">"open_to_work"</span>: <span class="t-num">true</span></div>
+        <div class="t-out">}</div>
+        <div class="t-line" style="margin-top:0.5rem"><span class="t-prompt">$</span>&nbsp;<span id="typewriter"></span><span style="color:var(--teal);animation:pulse 1s infinite">▌</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <p class="sec-label reveal">// work history</p>
+    <h2 class="sec-title reveal">Experience</h2>
+    <div class="exp-list">
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-date">Oct 2025 – Present</div>
+          <div class="exp-company">AMC Engineering College</div>
+        </div>
+        <div>
+          <div class="exp-role">Assistant Professor — CS &amp; Data Science</div>
+          <ul class="exp-bullets">
+            <li>Teaching Data Warehousing and Operating Systems to undergraduates</li>
+            <li>Integrating practical AI/ML case studies and tools into classroom learning</li>
+            <li>Mentoring students through project-based upskilling activities</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-date">Jun 2024 – Aug 2025</div>
+          <div class="exp-company">Altair (Siemens) — Bangalore</div>
+        </div>
+        <div>
+          <div class="exp-role">Software Development Intern</div>
+          <ul class="exp-bullets">
+            <li>Developed ML workflows using Python &amp; Altair AI Studio (RapidMiner) for predictive modeling</li>
+            <li>Built a GUI using Python + HWX APIs to streamline MSA run imports and result visualization</li>
+            <li>R&amp;D for NVH (Noise, Vibration, Harshness) prediction using ML — data analysis &amp; model refinement</li>
+            <li>Co-authored a research paper published at the SAE Noise &amp; Vibration Conference (May 2025)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div>
+          <div class="exp-date">Jul 2021 – Sep 2021</div>
+          <div class="exp-company">Inventeron Technologies</div>
+        </div>
+        <div>
+          <div class="exp-role">Machine Learning Intern</div>
+          <ul class="exp-bullets">
+            <li>Hands-on exposure to end-to-end ML lifecycle and deployment for real-world problem-solving</li>
+            <li>Built and deployed a car price prediction model using regression techniques</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section" id="projects" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <p class="sec-label reveal">// selected work</p>
+    <h2 class="sec-title reveal">Projects</h2>
+    <div class="projects-grid">
+      <div class="proj-card reveal">
+        <div class="proj-icon">🫀</div>
+        <div class="proj-title">Multimodal CV Risk Prediction</div>
+        <p class="proj-desc">Predicts cardiovascular risk from retinal images + clinical data using deep learning. Pre-trained ResNet152 for feature extraction; achieved 80% accuracy.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Deep Learning</span><span class="proj-tag">ResNet152</span>
+          <span class="proj-tag">Multimodal</span><span class="proj-tag">Medical AI</span>
+        </div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-icon">💰</div>
+        <div class="proj-title">HashFinance — Agentic Assistant</div>
+        <p class="proj-desc">AI financial assistant using Google Gemini for NL reasoning, ADK for conversational workflows, MCP Server for secure data aggregation. Deployed on GCP.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Agentic AI</span><span class="proj-tag">Gemini</span>
+          <span class="proj-tag">MCP</span><span class="proj-tag">GCP</span>
+        </div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-icon">⚡</div>
+        <div class="proj-title">LECOP GPU Parallelization</div>
+        <p class="proj-desc">Accelerated sequential image feature extraction (LECOP) using CUDA-based GPU parallelization. Achieved up to 13.9× speedup on benchmark datasets.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">CUDA</span><span class="proj-tag">GPU Computing</span>
+          <span class="proj-tag">Computer Vision</span><span class="proj-tag">C++</span>
+        </div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-icon">🚗</div>
+        <div class="proj-title">Driver Drowsiness Detection</div>
+        <p class="proj-desc">Real-time drowsiness detection using CNN for state classification on live video. Built with OpenCV for both pre-recorded and live video feed input.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">CNN</span><span class="proj-tag">OpenCV</span>
+          <span class="proj-tag">Real-time</span><span class="proj-tag">PyTorch</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section" id="skills">
+    <p class="sec-label reveal">// tech stack</p>
+    <h2 class="sec-title reveal">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <div class="skill-group-label">Languages</div>
+        <div class="skill-chips">
+          <span class="skill-chip">Python</span><span class="skill-chip">C</span><span class="skill-chip">C++</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-label">ML / DL</div>
+        <div class="skill-chips">
+          <span class="skill-chip">PyTorch</span><span class="skill-chip">Scikit-learn</span>
+          <span class="skill-chip">RapidMiner</span><span class="skill-chip">LangChain</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-label">AI &amp; GenAI</div>
+        <div class="skill-chips">
+          <span class="skill-chip">LLMs</span><span class="skill-chip">Agentic AI</span>
+          <span class="skill-chip">RAG</span><span class="skill-chip">Gemini</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-label">Systems</div>
+        <div class="skill-chips">
+          <span class="skill-chip">CUDA</span><span class="skill-chip">MPI</span>
+          <span class="skill-chip">Git</span><span class="skill-chip">Docker</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-label">Databases</div>
+        <div class="skill-chips">
+          <span class="skill-chip">SQL</span><span class="skill-chip">MongoDB</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-label">Deployment</div>
+        <div class="skill-chips">
+          <span class="skill-chip">FastAPI</span><span class="skill-chip">Google Cloud</span>
+          <span class="skill-chip">ReactJS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section class="section" id="publications" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <p class="sec-label reveal">// research</p>
+    <h2 class="sec-title reveal">Publications</h2>
+    <div class="pub-list">
+      <div class="pub-item reveal">
+        <span class="pub-year">2026</span>
+        <div>
+          <div class="pub-title">Parallelisation of Local Extrema Co-occurrence Pattern for Feature Extraction</div>
+          <div class="pub-conf">Machine Intelligence for Research and Innovations</div>
+          <div class="pub-doi">DOI: 10.1007/978-981-96-8799-28</div>
+        </div>
+      </div>
+      <div class="pub-item reveal">
+        <span class="pub-year">2025</span>
+        <div>
+          <div class="pub-title">Navigating Evolving Vehicle NVH Challenges with Application of Emerging Technologies in AI and ML</div>
+          <div class="pub-conf">SAE Noise &amp; Vibration Conference &amp; Exhibition</div>
+          <div class="pub-doi">DOI: 10.4271/2025-01-0130</div>
+        </div>
+      </div>
+      <div class="pub-item reveal">
+        <span class="pub-year">2024</span>
+        <div>
+          <div class="pub-title">Multimodal Deep Learning in Medical Diagnostics: A Comprehensive Exploration of Cardiovascular Risk Prediction</div>
+          <div class="pub-conf">Bentham Science — Book Chapter</div>
+          <div class="pub-doi">DOI: 10.2174/9789815305128124010008</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <p class="sec-label reveal" style="text-align:center">// get in touch</p>
+    <h2 class="sec-title reveal" style="margin-bottom:0.75rem">Let's Connect.</h2>
+    <p class="reveal">Open to internships, full-time roles, and research collaborations.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:soniarajhgr@gmail.com" class="contact-link">✉ soniarajhgr@gmail.com</a>
+      <a href="tel:7619689023" class="contact-link">📱 +91 76196 89023</a>
+      <a href="#" class="contact-link">LinkedIn →</a>
+      <a href="#" class="contact-link">GitHub →</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Sonia Raj</span>
+    <span style="color:var(--teal)">AI/ML Engineer · Researcher · Builder</span>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function animCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    })();
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Typewriter
+    const phrases = ['python train.py --model resnet152', 'git commit -m "publish paper #3"', 'docker build -t nvh-predictor .'];
+    let pi = 0, ci = 0;
+    const tw = document.getElementById('typewriter');
+    function type() {
+      if (ci < phrases[pi].length) { tw.textContent += phrases[pi][ci++]; setTimeout(type, 55); }
+      else setTimeout(erase, 1800);
+    }
+    function erase() {
+      if (tw.textContent.length > 0) { tw.textContent = tw.textContent.slice(0,-1); setTimeout(erase, 28); }
+      else { pi = (pi+1)%phrases.length; ci = 0; setTimeout(type, 500); }
+    }
+    setTimeout(type, 1500);
+  </script>
+</body>
+</html>
