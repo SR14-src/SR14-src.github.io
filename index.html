@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Sonia Raj — AI/ML Engineer & Researcher. M.Tech in CS from Manipal Institute of Technology. Portfolio showcasing projects in deep learning, NVH prediction, and GPU parallelization."/>
   <title>Sonia Raj — AI/ML Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -369,14 +372,53 @@
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
       .contact-section { padding: 4rem 1.25rem; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--teal);
+      color: var(--bg);
+      font-weight: 500;
+      z-index: 200;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 0.5rem; }
+
+    .section--alt {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .text-center { text-align: center; }
+
+    .footer-tagline { color: var(--teal); }
+
+    .t-line--spaced { margin-top: 0.5rem; }
+    .t-cursor { color: var(--teal); animation: pulse 1s infinite; }
+    .sec-title--tight { margin-bottom: 0.75rem; }
   </style>
 </head>
 <body>
 
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursorRing"></div>
 
-  <nav>
+  <nav aria-label="Main">
     <div class="nav-logo">Sonia<span>.Raj()</span></div>
     <ul class="nav-links">
       <li><a href="#experience">Experience</a></li>
@@ -385,6 +427,8 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
+
+  <main id="main-content">
 
   <!-- HERO -->
   <section class="hero">
@@ -425,15 +469,15 @@
         <div class="t-out">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-val">"LLMs"</span>, <span class="t-val">"CUDA"</span>, <span class="t-val">"GCP"</span>],</div>
         <div class="t-out">&nbsp;&nbsp;<span class="t-key">"open_to_work"</span>: <span class="t-num">true</span></div>
         <div class="t-out">}</div>
-        <div class="t-line" style="margin-top:0.5rem"><span class="t-prompt">$</span>&nbsp;<span id="typewriter"></span><span style="color:var(--teal);animation:pulse 1s infinite">▌</span></div>
+        <div class="t-line t-line--spaced"><span class="t-prompt">$</span>&nbsp;<span id="typewriter"></span><span class="t-cursor">▌</span></div>
       </div>
     </div>
   </section>
 
   <!-- EXPERIENCE -->
-  <section class="section" id="experience">
+  <section class="section" id="experience" aria-labelledby="experience-title">
     <p class="sec-label reveal">// work history</p>
-    <h2 class="sec-title reveal">Experience</h2>
+    <h2 class="sec-title reveal" id="experience-title">Experience</h2>
     <div class="exp-list">
       <div class="exp-item reveal">
         <div>
@@ -481,9 +525,9 @@
   </section>
 
   <!-- PROJECTS -->
-  <section class="section" id="projects" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <section class="section section--alt" id="projects" aria-labelledby="projects-title">
     <p class="sec-label reveal">// selected work</p>
-    <h2 class="sec-title reveal">Projects</h2>
+    <h2 class="sec-title reveal" id="projects-title">Projects</h2>
     <div class="projects-grid">
       <div class="proj-card reveal">
         <div class="proj-icon">🫀</div>
@@ -525,9 +569,9 @@
   </section>
 
   <!-- SKILLS -->
-  <section class="section" id="skills">
+  <section class="section" id="skills" aria-labelledby="skills-title">
     <p class="sec-label reveal">// tech stack</p>
-    <h2 class="sec-title reveal">Skills</h2>
+    <h2 class="sec-title reveal" id="skills-title">Skills</h2>
     <div class="skills-grid">
       <div class="skill-group reveal">
         <div class="skill-group-label">Languages</div>
@@ -573,9 +617,9 @@
   </section>
 
   <!-- PUBLICATIONS -->
-  <section class="section" id="publications" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <section class="section section--alt" id="publications" aria-labelledby="publications-title">
     <p class="sec-label reveal">// research</p>
-    <h2 class="sec-title reveal">Publications</h2>
+    <h2 class="sec-title reveal" id="publications-title">Publications</h2>
     <div class="pub-list">
       <div class="pub-item reveal">
         <span class="pub-year">2026</span>
@@ -605,60 +649,104 @@
   </section>
 
   <!-- CONTACT -->
-  <section class="contact-section" id="contact">
-    <p class="sec-label reveal" style="text-align:center">// get in touch</p>
-    <h2 class="sec-title reveal" style="margin-bottom:0.75rem">Let's Connect.</h2>
+  <section class="contact-section" id="contact" aria-labelledby="contact-title">
+    <p class="sec-label reveal text-center">// get in touch</p>
+    <h2 class="sec-title sec-title--tight reveal" id="contact-title">Let's Connect.</h2>
     <p class="reveal">Open to internships, full-time roles, and research collaborations.</p>
     <div class="contact-links reveal">
       <a href="mailto:soniarajhgr@gmail.com" class="contact-link">✉ soniarajhgr@gmail.com</a>
-      <a href="tel:7619689023" class="contact-link">📱 +91 76196 89023</a>
+      <a href="tel:+917619689023" class="contact-link">📱 +91 76196 89023</a>
       <a href="#" class="contact-link">LinkedIn →</a>
       <a href="#" class="contact-link">GitHub →</a>
     </div>
   </section>
 
+  </main>
+
   <footer>
     <span>© 2026 Sonia Raj</span>
-    <span style="color:var(--teal)">AI/ML Engineer · Researcher · Builder</span>
+    <span class="footer-tagline">AI/ML Engineer · Researcher · Builder</span>
   </footer>
 
   <script>
-    // Custom cursor
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-    (function animCursor() {
-      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-      requestAnimationFrame(animCursor);
-    })();
+    (function () {
+      'use strict';
 
-    // Scroll reveal
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 60);
-          obs.unobserve(e.target);
-        }
+      // Custom cursor (hidden on touch devices)
+      var cursorDot = document.getElementById('cursor');
+      var cursorRing = document.getElementById('cursorRing');
+      var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+      var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+      if (isTouchDevice) {
+        document.body.style.cursor = 'auto';
+        cursorDot.style.display = 'none';
+        cursorRing.style.display = 'none';
+      } else {
+        document.addEventListener('mousemove', function (e) {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        (function animateCursor() {
+          cursorDot.style.left = mouseX + 'px';
+          cursorDot.style.top = mouseY + 'px';
+          ringX += (mouseX - ringX) * 0.12;
+          ringY += (mouseY - ringY) * 0.12;
+          cursorRing.style.left = ringX + 'px';
+          cursorRing.style.top = ringY + 'px';
+          requestAnimationFrame(animateCursor);
+        })();
+      }
+
+      // Scroll reveal
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry, index) {
+          if (entry.isIntersecting) {
+            setTimeout(function () {
+              entry.target.classList.add('visible');
+            }, index * 60);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        observer.observe(el);
       });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-    // Typewriter
-    const phrases = ['python train.py --model resnet152', 'git commit -m "publish paper #3"', 'docker build -t nvh-predictor .'];
-    let pi = 0, ci = 0;
-    const tw = document.getElementById('typewriter');
-    function type() {
-      if (ci < phrases[pi].length) { tw.textContent += phrases[pi][ci++]; setTimeout(type, 55); }
-      else setTimeout(erase, 1800);
-    }
-    function erase() {
-      if (tw.textContent.length > 0) { tw.textContent = tw.textContent.slice(0,-1); setTimeout(erase, 28); }
-      else { pi = (pi+1)%phrases.length; ci = 0; setTimeout(type, 500); }
-    }
-    setTimeout(type, 1500);
+      // Typewriter
+      var phrases = [
+        'python train.py --model resnet152',
+        'git commit -m "publish paper #3"',
+        'docker build -t nvh-predictor .'
+      ];
+      var phraseIndex = 0;
+      var charIndex = 0;
+      var typewriterEl = document.getElementById('typewriter');
+
+      function typeChar() {
+        if (charIndex < phrases[phraseIndex].length) {
+          typewriterEl.textContent += phrases[phraseIndex][charIndex++];
+          setTimeout(typeChar, 55);
+        } else {
+          setTimeout(eraseChar, 1800);
+        }
+      }
+
+      function eraseChar() {
+        if (typewriterEl.textContent.length > 0) {
+          typewriterEl.textContent = typewriterEl.textContent.slice(0, -1);
+          setTimeout(eraseChar, 28);
+        } else {
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          charIndex = 0;
+          setTimeout(typeChar, 500);
+        }
+      }
+
+      setTimeout(typeChar, 1500);
+    })();
   </script>
 </body>
 </html>
